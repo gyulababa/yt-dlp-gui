@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -66,7 +67,7 @@ namespace YtDlpGuiApp
             }
         }
 
-        public static void RunYtDlp(string url, string downloadFolder, string formatArgs, string filenameTemplate, TextBox outputTextBox, Label progressLabel, ProgressBar bar)
+        public static Task RunYtDlp(string url, string downloadFolder, string formatArgs, string filenameTemplate, TextBox outputTextBox, Label progressLabel, ProgressBar bar)
         {
             string sanitizedFilename = Regex.Replace(filenameTemplate, "[\\/:*?\"<>|]", "_");
             string outputTemplate = Path.Combine(downloadFolder, sanitizedFilename);
@@ -82,12 +83,14 @@ namespace YtDlpGuiApp
                 CreateNoWindow = true
             };
 
-            var process = new Process { StartInfo = psi };
+            var process = new Process { StartInfo = psi, EnableRaisingEvents = true };
             process.OutputDataReceived += (s, e) => Helpers.AppendOutputSafe(e.Data, outputTextBox, progressLabel, bar);
             process.ErrorDataReceived += (s, e) => Helpers.AppendOutputSafe(e.Data, outputTextBox, progressLabel, bar);
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
+
+            return process.WaitForExitAsync();
         }
     }
 }
