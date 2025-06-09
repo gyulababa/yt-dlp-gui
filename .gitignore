@@ -1,17 +1,17 @@
 ﻿# Build outputs
-bin/
-obj/
 publish-standalone/
 publish-trimmed/
 *.exe
 
-# Visual Studio + Rider + VS Code
+# Per-project build folders
+src/bin/
+src/obj/
+
+# IDE and system junk
 .vscode/
 .idea/
 *.user
 *.suo
 *.csproj.user
-
-# OS cruft
 .DS_Store
 Thumbs.db
