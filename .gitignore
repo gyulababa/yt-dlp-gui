@@ -1,0 +1,17 @@
+﻿# Build outputs
+bin/
+obj/
+publish-standalone/
+publish-trimmed/
+*.exe
+
+# Visual Studio + Rider + VS Code
+.vscode/
+.idea/
+*.user
+*.suo
+*.csproj.user
+
+# OS cruft
+.DS_Store
+Thumbs.db
