@@ -1,11 +1,18 @@
 // Program.cs
 
-static class Program
+using System;
+using System.Windows.Forms;
+
+namespace YtDlpGuiApp
 {
-    [STAThread]
-    static void Main()
+    static class Program
     {
-        ApplicationConfiguration.Initialize(); // sets up fonts, DPI, etc.
-        Application.Run(new MainForm()); // launches your GUI
+        [STAThread]
+        static void Main()
+        {
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm());
+        }
     }
 }
+

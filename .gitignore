@@ -1,13 +1,4 @@
-﻿# Build outputs
-publish-standalone/
-publish-trimmed/
-*.exe
-
-# Per-project build folders
-src/bin/
-src/obj/
-
-# IDE and system junk
+﻿# Ignore IDE/system files
 .vscode/
 .idea/
 *.user
@@ -15,3 +6,13 @@ src/obj/
 *.csproj.user
 .DS_Store
 Thumbs.db
+
+# Ignore compiled output
+*.exe
+
+# Ignore build artifacts
+publish/
+publish-standalone/
+publish-trimmed/
+src/bin/
+src/obj/

@@ -12,25 +12,22 @@ namespace YtDlpGuiApp
         {
             if (string.IsNullOrWhiteSpace(line)) return;
 
+            // Handle download line separately
+            if (line.StartsWith("[download]"))
+            {
+                if (line.Contains("100% of"))
+                {
+                    progressLabel.Invoke(() => progressLabel.Text = line);
+                    bar.Invoke(() => bar.Value = 100);
+                }
+                return; // Don't print to outputTextBox
+            }
+
             outputTextBox.Invoke(() =>
             {
                 outputTextBox.AppendText(line + Environment.NewLine);
-
-                if (line.Contains("[download]") && line.Contains("%"))
-                {
-                    progressLabel.Text = line;
-                    var match = Regex.Match(line, @"\s+(\d{1,3}\.\d+)%");
-                    if (match.Success && double.TryParse(match.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double percent))
-                    {
-                        int value = Math.Min((int)percent, 100);
-                        bar.Value = value;
-                    }
-                }
-                else if (line.Contains("100%"))
-                {
-                    bar.Value = 100;
-                }
             });
         }
     }
 }
+
