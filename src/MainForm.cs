@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YtDlpGuiApp
@@ -40,7 +41,7 @@ namespace YtDlpGuiApp
             folderDisplayLabel = new Label { Top = 115, Left = 10, Height = 25, Text = "", AutoEllipsis = true, Anchor = AnchorStyles.Left | AnchorStyles.Right, Width = ClientSize.Width - 20 };
 
             downloadButton = new Button { Text = "Download", Top = 150, Left = 10, Height = 40, Anchor = AnchorStyles.Left | AnchorStyles.Right, Width = ClientSize.Width - 20 };
-            downloadButton.Click += (s, e) => StartDownload();
+            downloadButton.Click += async (s, e) => await StartDownload();
 
             outputTextBox = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, Height = 280, Top = 200, Left = 10, Font = new Font("Consolas", 11), Anchor = AnchorStyles.Left | AnchorStyles.Right, Width = ClientSize.Width - 20 };
 
@@ -92,10 +93,10 @@ namespace YtDlpGuiApp
             }
         }
 
-        private void StartDownload()
+        private async Task StartDownload()
         {
             outputTextBox.Clear();
-            downloadProgressLabel.Text = "";
+            downloadProgressLabel.Text = string.Empty;
             progressBar.Value = 0;
 
             string[] urls = urlTextBox.Text.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
@@ -127,7 +128,9 @@ namespace YtDlpGuiApp
                     ? includeChannelCheckbox.Checked ? "%(title)s [%(uploader)s].mp3" : "%(title)s.mp3"
                     : includeChannelCheckbox.Checked ? "%(title)s [%(uploader)s].mp4" : "%(title)s.mp4";
 
-                Downloader.RunYtDlp(cleanUrl, downloadFolder, formatArgs, filenameTemplate, outputTextBox, downloadProgressLabel, progressBar);
+                progressBar.Value = 0;
+                downloadProgressLabel.Text = string.Empty;
+                await Downloader.RunYtDlp(cleanUrl, downloadFolder, formatArgs, filenameTemplate, outputTextBox, downloadProgressLabel, progressBar);
             }
         }
     }
